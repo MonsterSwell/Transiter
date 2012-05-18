@@ -17,6 +17,15 @@
     // Override point for customization after application launch.
     return YES;
 }
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    
+//    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle: nil];
+
+    UINavigationController *nvc = (UINavigationController *)self.window.rootViewController;
+    MainViewController *mvc = [nvc.viewControllers objectAtIndex:0];
+    return [mvc.foursquare handleOpenURL:url];
+}
 							
 - (void)applicationWillResignActive:(UIApplication *)application
 {

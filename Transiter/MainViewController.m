@@ -17,6 +17,8 @@
 @synthesize mapView;
 @synthesize searchBar;
 
+@synthesize foursquare;
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -32,6 +34,19 @@
     [mapView setRegion:adjustedRegion animated:YES];
     
     _data = [[NSMutableArray alloc] initWithCapacity:1];
+    
+    // Setup foursquare object
+    self.foursquare = [[BZFoursquare alloc] initWithClientID:@"PE44U5EYTFAENZDA1JRMWVXA3EE22WCTOAZX1TFBLPWSA2GA" callbackURL:@"transiter://foursquare"];
+    self.foursquare.version = @"20111119";
+    self.foursquare.locale = [[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode];
+    self.foursquare.sessionDelegate = self;
+    
+    // Directly go for authentication
+    if (![foursquare isSessionValid]) {
+        NSLog(@"Going for foursquare auth");
+        
+        [foursquare startAuthorization];
+    }
 }
 
 - (void)viewDidUnload
@@ -93,6 +108,27 @@
     // Configure the cell.
     cell.textLabel.text = [NSString stringWithFormat:@"Row %d: %@", indexPath.row, [_data objectAtIndex:indexPath.row]];
     return cell;
+}
+
+#pragma mark - BZFoursquareRequestDelegate
+
+- (void)requestDidFinishLoading:(BZFoursquareRequest *)request {
+    
+}
+
+- (void)request:(BZFoursquareRequest *)request didFailWithError:(NSError *)error {
+    
+}
+
+#pragma mark - BZFoursquareSessionDelegate
+
+- (void)foursquareDidAuthorize:(BZFoursquare *)foursquare {
+    NSLog(@"foursquare access token %@", foursquare.accessToken);
+    
+}
+
+- (void)foursquareDidNotAuthorize:(BZFoursquare *)foursquare error:(NSDictionary *)errorInfo {
+    NSLog(@"Foursquare auth failed");
 }
 
 @end
