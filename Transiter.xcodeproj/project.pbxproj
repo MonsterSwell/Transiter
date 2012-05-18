@@ -14,7 +14,8 @@
 		4E7BB4EB1551B88E00926C0B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E7BB4EA1551B88E00926C0B /* main.m */; };
 		4E7BB4EF1551B88E00926C0B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E7BB4EE1551B88E00926C0B /* AppDelegate.m */; };
 		4E7BB4F21551B88E00926C0B /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4E7BB4F01551B88E00926C0B /* MainStoryboard.storyboard */; };
-		4E7BB4F51551B88E00926C0B /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E7BB4F41551B88E00926C0B /* ViewController.m */; };
+		4E7BB4F51551B88E00926C0B /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E7BB4F41551B88E00926C0B /* MainViewController.m */; };
+		4E7BB4FC1551C38B00926C0B /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E7BB4FB1551C38B00926C0B /* MapKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,15 +23,16 @@
 		4E7BB4DE1551B88E00926C0B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		4E7BB4E01551B88E00926C0B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		4E7BB4E21551B88E00926C0B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		4E7BB4E61551B88E00926C0B /* Transiter-Info.plist */ = {isa = PBXFileReference; path = "Transiter-Info.plist"; sourceTree = "<group>"; };
+		4E7BB4E61551B88E00926C0B /* Transiter-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Transiter-Info.plist"; sourceTree = "<group>"; };
 		4E7BB4E81551B88E00926C0B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4E7BB4EA1551B88E00926C0B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		4E7BB4EC1551B88E00926C0B /* Transiter-Prefix.pch */ = {isa = PBXFileReference; path = "Transiter-Prefix.pch"; sourceTree = "<group>"; };
-		4E7BB4ED1551B88E00926C0B /* AppDelegate.h */ = {isa = PBXFileReference; path = AppDelegate.h; sourceTree = "<group>"; };
+		4E7BB4EC1551B88E00926C0B /* Transiter-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Transiter-Prefix.pch"; sourceTree = "<group>"; };
+		4E7BB4ED1551B88E00926C0B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		4E7BB4EE1551B88E00926C0B /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		4E7BB4F11551B88E00926C0B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
-		4E7BB4F31551B88E00926C0B /* ViewController.h */ = {isa = PBXFileReference; path = ViewController.h; sourceTree = "<group>"; };
-		4E7BB4F41551B88E00926C0B /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		4E7BB4F31551B88E00926C0B /* MainViewController.h */ = {isa = PBXFileReference; path = MainViewController.h; sourceTree = "<group>"; };
+		4E7BB4F41551B88E00926C0B /* MainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
+		4E7BB4FB1551C38B00926C0B /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -38,6 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4E7BB4FC1551C38B00926C0B /* MapKit.framework in Frameworks */,
 				4E7BB4DF1551B88E00926C0B /* UIKit.framework in Frameworks */,
 				4E7BB4E11551B88E00926C0B /* Foundation.framework in Frameworks */,
 				4E7BB4E31551B88E00926C0B /* CoreGraphics.framework in Frameworks */,
@@ -50,6 +53,7 @@
 		4E7BB4CF1551B88E00926C0B = {
 			isa = PBXGroup;
 			children = (
+				4E7BB4FB1551C38B00926C0B /* MapKit.framework */,
 				4E7BB4E41551B88E00926C0B /* Transiter */,
 				4E7BB4DD1551B88E00926C0B /* Frameworks */,
 				4E7BB4DB1551B88E00926C0B /* Products */,
@@ -80,8 +84,8 @@
 				4E7BB4ED1551B88E00926C0B /* AppDelegate.h */,
 				4E7BB4EE1551B88E00926C0B /* AppDelegate.m */,
 				4E7BB4F01551B88E00926C0B /* MainStoryboard.storyboard */,
-				4E7BB4F31551B88E00926C0B /* ViewController.h */,
-				4E7BB4F41551B88E00926C0B /* ViewController.m */,
+				4E7BB4F31551B88E00926C0B /* MainViewController.h */,
+				4E7BB4F41551B88E00926C0B /* MainViewController.m */,
 				4E7BB4E51551B88E00926C0B /* Supporting Files */,
 			);
 			path = Transiter;
@@ -163,7 +167,7 @@
 			files = (
 				4E7BB4EB1551B88E00926C0B /* main.m in Sources */,
 				4E7BB4EF1551B88E00926C0B /* AppDelegate.m in Sources */,
-				4E7BB4F51551B88E00926C0B /* ViewController.m in Sources */,
+				4E7BB4F51551B88E00926C0B /* MainViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -275,6 +279,7 @@
 				4E7BB4FA1551B88E00926C0B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
