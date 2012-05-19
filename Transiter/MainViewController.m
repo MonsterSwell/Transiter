@@ -41,12 +41,14 @@
     self.foursquare.locale = [[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode];
     self.foursquare.sessionDelegate = self;
     
+#ifndef DEBUG
     // Directly go for authentication
     if (![foursquare isSessionValid]) {
         NSLog(@"Going for foursquare auth");
         
         [foursquare startAuthorization];
     }
+#endif
 }
 
 - (void)viewDidUnload
@@ -82,6 +84,14 @@
         [_data addObject:timer.userInfo];
     }
     [self.searchDisplayController.searchResultsTableView reloadData];
+}
+
+#pragma mark - UISearchBarDelegate
+
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
+    NSLog(@"begun editing %@", self.searchBar.showsScopeBar);
+    
+    
 }
 
 #pragma mark - UITableView methods
