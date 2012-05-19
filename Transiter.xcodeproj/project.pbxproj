@@ -10,6 +10,7 @@
 		4E1F19A81566A034001B333D /* BZFoursquare.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E1F19A51566A034001B333D /* BZFoursquare.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		4E1F19A91566A034001B333D /* BZFoursquareRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E1F19A71566A034001B333D /* BZFoursquareRequest.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		4E1F19AC1566A0D3001B333D /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E1F19AB1566A0D3001B333D /* MobileCoreServices.framework */; };
+		4E1F19C01567EAA2001B333D /* Destination.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E1F19BF1567EAA2001B333D /* Destination.m */; };
 		4E7BB4DF1551B88E00926C0B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E7BB4DE1551B88E00926C0B /* UIKit.framework */; };
 		4E7BB4E11551B88E00926C0B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E7BB4E01551B88E00926C0B /* Foundation.framework */; };
 		4E7BB4E31551B88E00926C0B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E7BB4E21551B88E00926C0B /* CoreGraphics.framework */; };
@@ -27,6 +28,8 @@
 		4E1F19A61566A034001B333D /* BZFoursquareRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZFoursquareRequest.h; sourceTree = "<group>"; };
 		4E1F19A71566A034001B333D /* BZFoursquareRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BZFoursquareRequest.m; sourceTree = "<group>"; };
 		4E1F19AB1566A0D3001B333D /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		4E1F19BE1567EAA2001B333D /* Destination.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Destination.h; sourceTree = "<group>"; };
+		4E1F19BF1567EAA2001B333D /* Destination.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Destination.m; sourceTree = "<group>"; };
 		4E7BB4DA1551B88E00926C0B /* Transiter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Transiter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E7BB4DE1551B88E00926C0B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		4E7BB4E01551B88E00926C0B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -105,6 +108,8 @@
 				4E1F19A31566A034001B333D /* BZFoursquare */,
 				4E7BB4ED1551B88E00926C0B /* AppDelegate.h */,
 				4E7BB4EE1551B88E00926C0B /* AppDelegate.m */,
+				4E1F19BE1567EAA2001B333D /* Destination.h */,
+				4E1F19BF1567EAA2001B333D /* Destination.m */,
 				4E7BB4F01551B88E00926C0B /* MainStoryboard.storyboard */,
 				4E7BB4F31551B88E00926C0B /* MainViewController.h */,
 				4E7BB4F41551B88E00926C0B /* MainViewController.m */,
@@ -192,6 +197,7 @@
 				4E7BB4F51551B88E00926C0B /* MainViewController.m in Sources */,
 				4E1F19A81566A034001B333D /* BZFoursquare.m in Sources */,
 				4E1F19A91566A034001B333D /* BZFoursquareRequest.m in Sources */,
+				4E1F19C01567EAA2001B333D /* Destination.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

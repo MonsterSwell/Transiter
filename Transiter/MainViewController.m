@@ -17,7 +17,8 @@
 @synthesize mapView;
 @synthesize searchBar;
 
-@synthesize visitListTable;
+@synthesize visitList;
+@synthesize searchTable;
 
 @synthesize foursquare;
 
@@ -35,9 +36,13 @@
     // 4
     [mapView setRegion:adjustedRegion animated:YES];
     
-    _data = [[NSMutableArray alloc] initWithCapacity:1];
-    [_data addObject:@"Home"];
-    [_data addObject:@"Work"];
+    
+    self.visitList = [[NSMutableArray alloc] init];
+    
+    [self.visitList addObject:[[Destination alloc] init]];
+
+    [self.searchTable reloadData];
+    
     
     // Setup foursquare object
     self.foursquare = [[BZFoursquare alloc] initWithClientID:@"PE44U5EYTFAENZDA1JRMWVXA3EE22WCTOAZX1TFBLPWSA2GA" callbackURL:@"transiter://foursquare"];
@@ -67,52 +72,69 @@
 }
 
 #pragma mark - UISearchDisplayDelegate methods
-
-- (void)searchDisplayControllerDidBeginSearch:(UISearchDisplayController *)controller {
-    // TODO show the current hit list of venues
-    
-    // Foursquare venues should be autocompleted from where you already have been (read history)
-    NSLog(@"in begin search");
-}
-
-- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
-    
-    self.visitListTable.hidden = YES;
-    
-    [NSTimer scheduledTimerWithTimeInterval:0 target:self selector:@selector(mockSearch:) userInfo:searchString repeats:NO];
-    return YES;
-}
-
-- (void)mockSearch:(NSTimer*)timer {
-    NSLog(@"Mock search called");
-    
-    [_data removeAllObjects];
-    int count = 1 + random() % 20;
-    for (int i = 0; i < count; i++) {
-        [_data addObject:timer.userInfo];
-    }
-    [self.searchDisplayController.searchResultsTableView reloadData];
-}
+//
+//- (void)searchDisplayControllerDidBeginSearch:(UISearchDisplayController *)controller {
+//    // TODO show the current hit list of venues
+//    
+//    // Foursquare venues should be autocompleted from where you already have been (read history)
+//    NSLog(@"in begin search");
+//}
+//
+//- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
+//    
+//    self.visitListTable.hidden = YES;
+//    
+//    [NSTimer scheduledTimerWithTimeInterval:0 target:self selector:@selector(mockSearch:) userInfo:searchString repeats:NO];
+//    return YES;
+//}
+//
+//- (void)mockSearch:(NSTimer*)timer {
+//    NSLog(@"Mock search called");
+//    
+//    [_data removeAllObjects];
+//    int count = 1 + random() % 20;
+//    for (int i = 0; i < count; i++) {
+//        [_data addObject:timer.userInfo];
+//    }
+//    [self.searchDisplayController.searchResultsTableView reloadData];
+//}
 
 #pragma mark - UISearchBarDelegate
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
 //    NSLog(@"begun editing %@", self.searchBar.showsScopeBar);
 
-    self.visitListTable.hidden = NO;
+    self.searchTable.hidden = NO;
 //    self.searchDisplayController.searchContentsController.
     
+    self.searchBar.showsCancelButton = YES;
+    
+    [self.searchTable reloadData];
 }
 
 - (void)searchBarBookmarkButtonClicked:(UISearchBar *)searchBar {
     // Show visit list here
     
-    self.visitListTable.hidden = NO;
-//    [self.searchBar becomeFirstResponder];
+    [self.searchTable reloadData];
+    
+    self.searchTable.hidden = !self.searchTable.hidden;
+    
+    if (!self.searchTable.hidden) {
+        [self.searchBar becomeFirstResponder];
+    } else {
+        [self.searchBar resignFirstResponder];
+    }
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+    self.searchTable.hidden = YES;
+    [self.searchBar resignFirstResponder];
 }
 
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
-    self.visitListTable.hidden = YES;
+    self.searchTable.hidden = YES;
+    
+    self.searchBar.showsCancelButton = NO;
 }
 
 #pragma mark - UITableView methods
@@ -121,23 +143,33 @@
     return 1;
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    return @"List of places to visit";
+}
+
 - (NSInteger)tableView:(UITableView *)aTableView numberOfRowsInSection:(NSInteger)section {
-    return [_data count];
+    
+    NSLog(@"rows %d", visitList.count);
+    
+    return [visitList count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    static NSString *CellIdentifier = @"CellIdentifier";
+    static NSString *CellIdentifier = @"VisitListCell";
     
     // Dequeue or create a cell of the appropriate type.
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     
-    // Configure the cell.
-    cell.textLabel.text = [NSString stringWithFormat:@"Row %d: %@", indexPath.row, [_data objectAtIndex:indexPath.row]];
+    NSString *visitLocation = [visitList objectAtIndex:indexPath.row];
+    
+    NSLog(@"location %@", visitLocation);
+    
+    cell.textLabel.text = visitLocation;
     return cell;
 }
 

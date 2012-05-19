@@ -9,19 +9,22 @@
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
 
+#import "Destination.h"
+
 #import "BZFoursquare.h"
 
 #define METERS_PER_MILE 1609.344
 
-@interface MainViewController : UIViewController <UISearchDisplayDelegate, UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, BZFoursquareRequestDelegate, BZFoursquareSessionDelegate> {
+@interface MainViewController : UIViewController <UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, BZFoursquareRequestDelegate, BZFoursquareSessionDelegate> {
     
-    NSMutableArray *_data;
+    NSMutableArray *visitList;
 }
 
 @property (strong, nonatomic) IBOutlet MKMapView *mapView;
 @property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
 
-@property (strong, nonatomic) IBOutlet UITableView *visitListTable;
+@property (strong, nonatomic) NSMutableArray *visitList;
+@property (strong, nonatomic) IBOutlet UITableView *searchTable;
 
 @property (nonatomic, strong) BZFoursquare *foursquare;
 
