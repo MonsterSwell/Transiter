@@ -17,6 +17,8 @@
 @synthesize mapView;
 @synthesize searchBar;
 
+@synthesize visitListTable;
+
 @synthesize foursquare;
 
 - (void)viewDidLoad
@@ -34,6 +36,8 @@
     [mapView setRegion:adjustedRegion animated:YES];
     
     _data = [[NSMutableArray alloc] initWithCapacity:1];
+    [_data addObject:@"Home"];
+    [_data addObject:@"Work"];
     
     // Setup foursquare object
     self.foursquare = [[BZFoursquare alloc] initWithClientID:@"PE44U5EYTFAENZDA1JRMWVXA3EE22WCTOAZX1TFBLPWSA2GA" callbackURL:@"transiter://foursquare"];
@@ -68,11 +72,15 @@
     // TODO show the current hit list of venues
     
     // Foursquare venues should be autocompleted from where you already have been (read history)
+    NSLog(@"in begin search");
 }
 
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
-    [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(mockSearch:) userInfo:searchString repeats:NO];
-    return NO;
+    
+    self.visitListTable.hidden = YES;
+    
+    [NSTimer scheduledTimerWithTimeInterval:0 target:self selector:@selector(mockSearch:) userInfo:searchString repeats:NO];
+    return YES;
 }
 
 - (void)mockSearch:(NSTimer*)timer {
@@ -89,9 +97,22 @@
 #pragma mark - UISearchBarDelegate
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
-    NSLog(@"begun editing %@", self.searchBar.showsScopeBar);
+//    NSLog(@"begun editing %@", self.searchBar.showsScopeBar);
+
+    self.visitListTable.hidden = NO;
+//    self.searchDisplayController.searchContentsController.
     
+}
+
+- (void)searchBarBookmarkButtonClicked:(UISearchBar *)searchBar {
+    // Show visit list here
     
+    self.visitListTable.hidden = NO;
+//    [self.searchBar becomeFirstResponder];
+}
+
+- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
+    self.visitListTable.hidden = YES;
 }
 
 #pragma mark - UITableView methods
@@ -112,7 +133,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     
     // Configure the cell.
