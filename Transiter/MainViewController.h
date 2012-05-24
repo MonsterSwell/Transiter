@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
+#import <CoreLocation/CoreLocation.h>
 
 #import "Destination.h"
 
@@ -15,7 +16,8 @@
 
 #define METERS_PER_MILE 1609.344
 
-@interface MainViewController : UIViewController <UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, BZFoursquareRequestDelegate, BZFoursquareSessionDelegate> {
+@interface MainViewController : UIViewController <UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, BZFoursquareRequestDelegate, BZFoursquareSessionDelegate,
+    CLLocationManagerDelegate> {
     
     NSMutableArray *destinationList;
     NSMutableArray *searchResultList;
@@ -24,6 +26,8 @@
     NSDictionary *fsMeta;
     NSArray *fsNotifications;
     NSDictionary *fsResponse;
+        
+    CLLocationManager *locationManager;
 }
 
 @property (strong, nonatomic) IBOutlet MKMapView *mapView;

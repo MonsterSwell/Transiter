@@ -33,6 +33,12 @@
 {
     [super viewDidLoad];
 
+    locationManager = [[CLLocationManager alloc] init];
+    locationManager.delegate = self;
+    locationManager.distanceFilter = kCLDistanceFilterNone; // whenever we move
+    locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    [locationManager startUpdatingLocation];
+    
     CLLocationCoordinate2D zoomLocation;
     zoomLocation.latitude = 39.281516;
     zoomLocation.longitude= -76.580806;
@@ -134,6 +140,14 @@
     [self.fsRequest start];
 
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+}
+
+#pragma mark - CLLocationManagerDelegate
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
+    MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(newLocation.coordinate, 1000.0, 1000.0);
+    MKCoordinateRegion adjustedRegion = [mapView regionThatFits:viewRegion];                
+    [mapView setRegion:adjustedRegion animated:YES];
 }
 
 #pragma mark - UISearchBarDelegate

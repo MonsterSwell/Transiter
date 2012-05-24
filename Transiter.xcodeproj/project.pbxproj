@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4E14FFA4156E97EE00C5E064 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E14FFA3156E97EE00C5E064 /* CoreLocation.framework */; };
 		4E1F19A81566A034001B333D /* BZFoursquare.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E1F19A51566A034001B333D /* BZFoursquare.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		4E1F19A91566A034001B333D /* BZFoursquareRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E1F19A71566A034001B333D /* BZFoursquareRequest.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		4E1F19AC1566A0D3001B333D /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E1F19AB1566A0D3001B333D /* MobileCoreServices.framework */; };
@@ -23,6 +24,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4E14FFA3156E97EE00C5E064 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		4E1F19A41566A034001B333D /* BZFoursquare.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZFoursquare.h; sourceTree = "<group>"; };
 		4E1F19A51566A034001B333D /* BZFoursquare.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BZFoursquare.m; sourceTree = "<group>"; };
 		4E1F19A61566A034001B333D /* BZFoursquareRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZFoursquareRequest.h; sourceTree = "<group>"; };
@@ -51,6 +53,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4E14FFA4156E97EE00C5E064 /* CoreLocation.framework in Frameworks */,
 				4E1F19AC1566A0D3001B333D /* MobileCoreServices.framework in Frameworks */,
 				4E7BB4FC1551C38B00926C0B /* MapKit.framework in Frameworks */,
 				4E7BB4DF1551B88E00926C0B /* UIKit.framework in Frameworks */,
@@ -76,6 +79,7 @@
 		4E7BB4CF1551B88E00926C0B = {
 			isa = PBXGroup;
 			children = (
+				4E14FFA3156E97EE00C5E064 /* CoreLocation.framework */,
 				4E1F19AB1566A0D3001B333D /* MobileCoreServices.framework */,
 				4E7BB4FB1551C38B00926C0B /* MapKit.framework */,
 				4E7BB4E41551B88E00926C0B /* Transiter */,
