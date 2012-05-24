@@ -17,16 +17,29 @@
 
 @interface MainViewController : UIViewController <UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, BZFoursquareRequestDelegate, BZFoursquareSessionDelegate> {
     
-    NSMutableArray *visitList;
+    NSMutableArray *destinationList;
+    NSMutableArray *searchResultList;
+    
+    BZFoursquareRequest *fsRequest;
+    NSDictionary *fsMeta;
+    NSArray *fsNotifications;
+    NSDictionary *fsResponse;
 }
 
 @property (strong, nonatomic) IBOutlet MKMapView *mapView;
 @property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
 
-@property (strong, nonatomic) NSMutableArray *visitList;
+@property (strong, nonatomic) NSMutableArray *destinationList;
+@property (strong, nonatomic) NSMutableArray *searchResultList;
+
 @property (strong, nonatomic) IBOutlet UITableView *searchTable;
 
 @property (nonatomic, strong) BZFoursquare *foursquare;
+
+@property(nonatomic,strong) BZFoursquareRequest *fsRequest;
+@property(nonatomic,copy) NSDictionary *fsMeta;
+@property(nonatomic,copy) NSArray *fsNotifications;
+@property(nonatomic,copy) NSDictionary *fsResponse;
 
 
 @end

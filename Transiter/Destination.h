@@ -21,6 +21,6 @@
 
 @property (readwrite) CLLocationCoordinate2D *location;
 
-- (id)initWithName:(NSString *)name;
+- (id)initWithName:(NSString *)theName;
 
 @end

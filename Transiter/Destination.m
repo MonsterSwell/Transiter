@@ -14,9 +14,11 @@
 @synthesize address;
 @synthesize location;
 
-- (id)initWithName:(NSString *)name {
+- (id)initWithName:(NSString *)theName {
     if (self = [super init]) {
-        self.name = name;
+        self.name = theName;
     }
+    
+    return self;
 }
 @end

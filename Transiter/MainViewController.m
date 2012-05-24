@@ -17,10 +17,17 @@
 @synthesize mapView;
 @synthesize searchBar;
 
-@synthesize visitList;
+@synthesize destinationList;
+@synthesize searchResultList;
+
 @synthesize searchTable;
 
 @synthesize foursquare;
+
+@synthesize fsRequest;
+@synthesize fsMeta;
+@synthesize fsNotifications;
+@synthesize fsResponse;
 
 - (void)viewDidLoad
 {
@@ -37,11 +44,15 @@
     [mapView setRegion:adjustedRegion animated:YES];
     
     
-    self.visitList = [[NSMutableArray alloc] init];
+    self.destinationList = [[NSMutableArray alloc] init];
+    self.searchResultList = [[NSMutableArray alloc] init];
     
-    [self.visitList addObject:[[Destination alloc] init]];
-
-    [self.searchTable reloadData];
+    [self.destinationList addObject:[[Destination alloc] initWithName:@"Work"]];
+    [self.destinationList addObject:[[Destination alloc] initWithName:@"Home"]];
+    
+    [self.searchResultList addObject:[[Destination alloc] initWithName:@"Bar"]];
+    
+//    [self.searchTable reloadData];
     
     
     // Setup foursquare object
@@ -50,14 +61,12 @@
     self.foursquare.locale = [[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode];
     self.foursquare.sessionDelegate = self;
     
-#ifndef DEBUG
     // Directly go for authentication
     if (![foursquare isSessionValid]) {
         NSLog(@"Going for foursquare auth");
         
         [foursquare startAuthorization];
     }
-#endif
 }
 
 - (void)viewDidUnload
@@ -99,6 +108,31 @@
 //    [self.searchDisplayController.searchResultsTableView reloadData];
 //}
 
+- (void)cancelRequest {
+    if (self.fsRequest) {
+        self.fsRequest.delegate = nil;
+        [self.fsRequest cancel];
+        self.fsRequest = nil;
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    }
+}
+
+- (void)prepareForRequest {
+    [self cancelRequest];
+    self.fsMeta = nil;
+    self.fsNotifications = nil;
+    self.fsResponse = nil;
+}
+
+- (void)searchVenues {
+    [self prepareForRequest];
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:@"40.7,-74", @"ll", nil];
+    self.fsRequest = [self.foursquare requestWithPath:@"venues/search" HTTPMethod:@"GET" parameters:parameters delegate:self];
+    [self.fsRequest start];
+
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+}
+
 #pragma mark - UISearchBarDelegate
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
@@ -108,6 +142,8 @@
 //    self.searchDisplayController.searchContentsController.
     
     self.searchBar.showsCancelButton = YES;
+    
+    [self searchVenues];
     
     [self.searchTable reloadData];
 }
@@ -140,23 +176,38 @@
 #pragma mark - UITableView methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)aTableView {
-    return 1;
+    return 2;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    return @"List of places to visit";
+    if (section == 0) {
+        return @"Add a destination";
+    } else {
+        return @"List of places to visit";
+    }
 }
 
 - (NSInteger)tableView:(UITableView *)aTableView numberOfRowsInSection:(NSInteger)section {
     
-    NSLog(@"rows %d", visitList.count);
-    
-    return [visitList count];
+    if (section == 0) {
+        return [searchResultList count];
+    } else {
+        return [destinationList count];
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    static NSString *CellIdentifier = @"VisitListCell";
+    static NSString *CellIdentifier;
+    Destination *destination;
+    
+    if (indexPath.section == 0) {
+        CellIdentifier = @"SearchCell";
+        destination = [searchResultList objectAtIndex:indexPath.row];
+    } else {
+        CellIdentifier = @"DestinationCell";
+        destination = [destinationList objectAtIndex:indexPath.row];
+    }
     
     // Dequeue or create a cell of the appropriate type.
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -165,18 +216,25 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
-    NSString *visitLocation = [visitList objectAtIndex:indexPath.row];
+    // NSLog(@"location %@", destination.name);
     
-    NSLog(@"location %@", visitLocation);
-    
-    cell.textLabel.text = visitLocation;
+    cell.textLabel.text = destination.name;
     return cell;
 }
 
 #pragma mark - BZFoursquareRequestDelegate
 
 - (void)requestDidFinishLoading:(BZFoursquareRequest *)request {
+    self.fsMeta = request.meta;
+    self.fsNotifications = request.notifications;
+    self.fsResponse = request.response;
+    self.fsRequest = nil;
     
+    NSLog(@"%@", self.fsResponse);
+    
+    // TODO update tableview, with search results
+    
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
 - (void)request:(BZFoursquareRequest *)request didFailWithError:(NSError *)error {
