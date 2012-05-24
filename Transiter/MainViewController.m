@@ -54,12 +54,15 @@
     
 //    [self.searchTable reloadData];
     
-    
     // Setup foursquare object
     self.foursquare = [[BZFoursquare alloc] initWithClientID:@"PE44U5EYTFAENZDA1JRMWVXA3EE22WCTOAZX1TFBLPWSA2GA" callbackURL:@"transiter://foursquare"];
     self.foursquare.version = @"20111119";
     self.foursquare.locale = [[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode];
     self.foursquare.sessionDelegate = self;
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *fsToken = [defaults stringForKey:@"fstoken"];
+    self.foursquare.accessToken = fsToken;
     
     // Directly go for authentication
     if (![foursquare isSessionValid]) {
@@ -246,6 +249,8 @@
 - (void)foursquareDidAuthorize:(BZFoursquare *)foursquare {
     NSLog(@"foursquare access token %@", foursquare.accessToken);
     
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setValue:foursquare.accessToken forKey:@"fstoken"];
 }
 
 - (void)foursquareDidNotAuthorize:(BZFoursquare *)foursquare error:(NSDictionary *)errorInfo {
