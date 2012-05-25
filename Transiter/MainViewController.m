@@ -165,10 +165,10 @@
 //    self.searchDisplayController.searchContentsController.
     
     self.searchBar.showsCancelButton = YES;
-    
+}
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     [self searchVenues];
-    
-    [self.searchTable reloadData];
 }
 
 - (void)searchBarBookmarkButtonClicked:(UISearchBar *)searchBar {
@@ -245,6 +245,20 @@
     return cell;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 0) {
+        // Add the selection to the destination list
+        [destinationList addObject:[searchResultList objectAtIndex:indexPath.row]];
+        
+        // Empty the search results
+        [searchResultList removeAllObjects];
+        
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        
+        [tableView reloadData];
+    }
+}
+
 #pragma mark - BZFoursquareRequestDelegate
 
 - (void)requestDidFinishLoading:(BZFoursquareRequest *)request {
@@ -253,7 +267,38 @@
     self.fsResponse = request.response;
     self.fsRequest = nil;
     
-    NSLog(@"%@", self.fsResponse);
+    // Foursquare API call https://developer.foursquare.com/docs/venues/search
+    NSLog(@"request finished");
+    NSArray *venues = [self.fsResponse objectForKey:@"venues"];
+    
+    for (NSDictionary *venue in venues) {
+        NSLog(@"%@", venue);
+        NSString *fsid = [venue objectForKey:@"id"];
+        NSString *name = [venue objectForKey:@"name"];
+        
+        NSDictionary *loc = [venue objectForKey:@"location"];
+        
+        NSLog(@"location: %@", loc);
+        
+        NSString *lat = [loc objectForKey:@"lat"];
+        NSString *lng = [loc objectForKey:@"lng"];
+        
+        NSString *address = [loc objectForKey:@"address"];
+        NSString *city = [loc objectForKey:@"city"];
+        NSString *country = [loc objectForKey:@"Germany"];
+        NSInteger distance = [loc objectForKey:@"distance"];
+        
+        Destination *dest = [[Destination alloc] initWithName:name];
+        dest.fsid = fsid;
+        dest.lat = lat;
+        dest.lng = lng;
+        dest.address = [NSString stringWithFormat:@"%@, %@", address, city];
+        
+        NSLog(@"added object %@", name);
+        [searchResultList addObject:dest];
+    }
+    
+    [self.searchTable reloadData];
     
     // TODO update tableview, with search results
     

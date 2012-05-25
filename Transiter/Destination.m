@@ -12,7 +12,12 @@
 
 @synthesize name;
 @synthesize address;
-@synthesize location;
+
+@synthesize fsid;
+
+@synthesize lat;
+@synthesize lng;
+
 
 - (id)initWithName:(NSString *)theName {
     if (self = [super init]) {

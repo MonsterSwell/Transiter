@@ -13,13 +13,19 @@
     NSString *name;
     NSString *address;
     
-    CLLocationCoordinate2D *location;
+    NSString *fsid;
+    
+    NSString *lat;
+    NSString *lng;
 }
 
 @property (nonatomic, retain) NSString *name;
 @property (nonatomic, retain) NSString *address;
 
-@property (readwrite) CLLocationCoordinate2D *location;
+@property (nonatomic, retain) NSString *fsid;
+
+@property (nonatomic, retain) NSString *lat;
+@property (nonatomic, retain) NSString *lng;
 
 - (id)initWithName:(NSString *)theName;
 
