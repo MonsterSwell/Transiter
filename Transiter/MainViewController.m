@@ -173,6 +173,8 @@
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
     self.searchTable.hidden = YES;
     [self.searchBar resignFirstResponder];
+    
+    [self cancelRequest];
 }
 
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
