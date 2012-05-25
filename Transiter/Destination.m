@@ -22,6 +22,12 @@
 - (id)initWithName:(NSString *)theName {
     if (self = [super init]) {
         self.name = theName;
+        
+        self.address = @"";
+        self.fsid = nil;
+        
+        self.lat = nil;
+        self.lng = nil;
     }
     
     return self;

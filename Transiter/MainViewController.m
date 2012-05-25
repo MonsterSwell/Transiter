@@ -91,34 +91,6 @@
     return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
 }
 
-#pragma mark - UISearchDisplayDelegate methods
-//
-//- (void)searchDisplayControllerDidBeginSearch:(UISearchDisplayController *)controller {
-//    // TODO show the current hit list of venues
-//    
-//    // Foursquare venues should be autocompleted from where you already have been (read history)
-//    NSLog(@"in begin search");
-//}
-//
-//- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
-//    
-//    self.visitListTable.hidden = YES;
-//    
-//    [NSTimer scheduledTimerWithTimeInterval:0 target:self selector:@selector(mockSearch:) userInfo:searchString repeats:NO];
-//    return YES;
-//}
-//
-//- (void)mockSearch:(NSTimer*)timer {
-//    NSLog(@"Mock search called");
-//    
-//    [_data removeAllObjects];
-//    int count = 1 + random() % 20;
-//    for (int i = 0; i < count; i++) {
-//        [_data addObject:timer.userInfo];
-//    }
-//    [self.searchDisplayController.searchResultsTableView reloadData];
-//}
-
 - (void)cancelRequest {
     if (self.fsRequest) {
         self.fsRequest.delegate = nil;
@@ -242,6 +214,7 @@
     // NSLog(@"location %@", destination.name);
     
     cell.textLabel.text = destination.name;
+    cell.detailTextLabel.text = destination.address;
     return cell;
 }
 
