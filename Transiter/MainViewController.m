@@ -209,6 +209,19 @@
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section != 0) {
         return YES;
+    } else {
+        return NO;
+    }
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        // Delete the data
+        [destinationList removeObjectAtIndex:indexPath.row];
+        
+        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        
+        [self updateViews];
     }
 }
 
@@ -250,6 +263,8 @@
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
         
         [tableView reloadData];
+        
+        self.searchBar.text = @"";
     }
 }
 
