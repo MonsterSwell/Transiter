@@ -55,20 +55,13 @@
     self.destinationList = [[NSMutableArray alloc] init];
     self.searchResultList = [[NSMutableArray alloc] init];
     
-    [self.destinationList addObject:[[Destination alloc] initWithName:@"Work"]];
-    [self.destinationList addObject:[[Destination alloc] initWithName:@"Home"]];
+//    [self.destinationList addObject:[[Destination alloc] initWithName:@"Work"]];
+//    [self.destinationList addObject:[[Destination alloc] initWithName:@"Home"]];
     
-    [self.searchResultList addObject:[[Destination alloc] initWithName:@"Bar"]];
-    
-
-    if (destinationList.count) {
-        Destination *dest = [destinationList objectAtIndex:0];
-        self.searchBar.placeholder = dest.name;
-    } else {
-        self.searchBar.placeholder = @"Add places to go…";
-    }
+    [self updateViews];
     
     // Setup foursquare object
+    // See foursquare example: https://github.com/baztokyo/foursquare-ios-api/blob/master/FSQDemo/FSQDemo/FSQMasterViewController.m
     self.foursquare = [[BZFoursquare alloc] initWithClientID:@"PE44U5EYTFAENZDA1JRMWVXA3EE22WCTOAZX1TFBLPWSA2GA" callbackURL:@"transiter://foursquare"];
     self.foursquare.version = @"20111119";
     self.foursquare.locale = [[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode];
