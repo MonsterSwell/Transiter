@@ -28,6 +28,7 @@
     NSDictionary *fsResponse;
         
     CLLocationManager *locationManager;
+    CLLocationCoordinate2D location;
 }
 
 @property (strong, nonatomic) IBOutlet MKMapView *mapView;
@@ -45,5 +46,6 @@
 @property(nonatomic,copy) NSArray *fsNotifications;
 @property(nonatomic,copy) NSDictionary *fsResponse;
 
+@property (readwrite) CLLocationCoordinate2D location;
 
 @end

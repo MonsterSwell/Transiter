@@ -29,6 +29,8 @@
 @synthesize fsNotifications;
 @synthesize fsResponse;
 
+@synthesize location;
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -135,7 +137,9 @@
 
 - (void)searchVenues {
     [self prepareForRequest];
-    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:@"40.7,-74", @"ll", nil];
+    
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%f,%f", self.location.latitude, self.location.longitude], @"ll", self.searchBar.text, @"query", nil];
+    
     self.fsRequest = [self.foursquare requestWithPath:@"venues/search" HTTPMethod:@"GET" parameters:parameters delegate:self];
     [self.fsRequest start];
 
@@ -145,7 +149,9 @@
 #pragma mark - CLLocationManagerDelegate
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
-    MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(newLocation.coordinate, 1000.0, 1000.0);
+    self.location = newLocation.coordinate;
+    
+    MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(self.location, 1000.0, 1000.0);
     MKCoordinateRegion adjustedRegion = [mapView regionThatFits:viewRegion];                
     [mapView setRegion:adjustedRegion animated:YES];
 }
