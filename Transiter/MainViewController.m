@@ -60,7 +60,13 @@
     
     [self.searchResultList addObject:[[Destination alloc] initWithName:@"Bar"]];
     
-//    [self.searchTable reloadData];
+
+    if (destinationList.count) {
+        Destination *dest = [destinationList objectAtIndex:0];
+        self.searchBar.placeholder = dest.name;
+    } else {
+        self.searchBar.placeholder = @"Add places to go…";
+    }
     
     // Setup foursquare object
     self.foursquare = [[BZFoursquare alloc] initWithClientID:@"PE44U5EYTFAENZDA1JRMWVXA3EE22WCTOAZX1TFBLPWSA2GA" callbackURL:@"transiter://foursquare"];
@@ -141,6 +147,8 @@
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     [self searchVenues];
+    
+    // TODO if we can speed search up, do it on every textChange
 }
 
 - (void)searchBarBookmarkButtonClicked:(UISearchBar *)searchBar {
@@ -259,7 +267,7 @@
         NSString *address = [loc objectForKey:@"address"];
         NSString *city = [loc objectForKey:@"city"];
         NSString *country = [loc objectForKey:@"Germany"];
-        NSInteger distance = [loc objectForKey:@"distance"];
+        int distance = (int)[loc objectForKey:@"distance"];
         
         Destination *dest = [[Destination alloc] initWithName:name];
         dest.fsid = fsid;

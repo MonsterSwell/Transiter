@@ -34,10 +34,10 @@
                                     <segue destination="ve2-0H-bRE" kind="push" id="04M-a5-Yaa"/>
                                 </connections>
                             </button>
-                            <searchBar contentMode="redraw" barStyle="blackTranslucent" text="c" placeholder="Destination" showsBookmarkButton="YES" id="Tyy-M4-hGh">
+                            <searchBar contentMode="redraw" barStyle="blackTranslucent" placeholder="Destination" showsBookmarkButton="YES" id="Tyy-M4-hGh">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no"/>
                                 <connections>
                                     <outlet property="delegate" destination="2" id="3tZ-vc-qtI"/>
                                 </connections>
