@@ -90,6 +90,18 @@
     return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
 }
 
+- (void)updateViews {
+    if (destinationList.count) {
+        Destination *dest = [destinationList objectAtIndex:0];
+        self.searchBar.placeholder = dest.name;
+    
+        // Update the MKMapViews to reflect all the destinations in the list
+        
+    } else {
+        self.searchBar.placeholder = @"Add places to go…";
+    }
+}
+
 - (void)cancelRequest {
     if (self.fsRequest) {
         self.fsRequest.delegate = nil;
