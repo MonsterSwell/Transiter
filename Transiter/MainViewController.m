@@ -97,6 +97,9 @@
     
         // Update the MKMapViews to reflect all the destinations in the list
         
+        
+        // Add the overlays to the map
+        
     } else {
         self.searchBar.placeholder = @"Add places to go…";
     }
@@ -166,6 +169,19 @@
     }
     
     return aView;
+}
+
+- (MKOverlayView *)mapView:(MKMapView *)mapView viewForOverlay:(id<MKOverlay>)overlay {
+    if ([overlay isKindOfClass:[MKPolyline class]]) {
+        MKPolylineView *aView = [[MKPolylineView alloc] initWithPolyline:(MKPolyline *)overlay];
+        
+        aView.strokeColor = [UIColor blueColor];
+        aView.lineWidth = 2;
+        
+        return aView;
+    } else {
+        return nil;
+    }
 }
 
 #pragma mark - UISearchBarDelegate
@@ -289,12 +305,32 @@
         [destinationList addObject:dest];
         [mapView addAnnotation:dest];
         
+        // Add an overlay from the last point (or the user's current location) to this point
+        CLLocationCoordinate2D coords[2];
+        
+        // Indexing is fucked because we already add the object TODO
+        if (destinationList.count == 1) {
+            coords[0] = location;
+        } else {
+            // -2 because we just already added the Dest to the destinationList
+            Destination *previousDestination = [destinationList objectAtIndex:destinationList.count-2];
+            coords[0] = previousDestination.coordinate;
+        }
+        coords[1] = dest.coordinate;
+        
+//        NSLog(@"Coordinates array %@", coords);
+        MKPolyline *line = [MKPolyline polylineWithCoordinates:coords count:2];
+        [mapView addOverlay:line];
+        
+        
         // Empty the search results
         [searchResultList removeAllObjects];
         
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
         
         [tableView reloadData];
+        
+        [self updateViews];
         
         self.searchBar.text = @"";
     }
