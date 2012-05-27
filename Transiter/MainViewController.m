@@ -236,7 +236,11 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     if (section == 0) {
-        return @"Add a destination";
+        if (searchResultList.count == 0) {
+            return @"Search for a destination";
+        } else {
+            return @"Add a destination";
+        }   
     } else {
         return @"List of places to visit";
     }
