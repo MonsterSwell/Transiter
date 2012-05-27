@@ -9,24 +9,23 @@
 #import <Foundation/Foundation.h>
 #import <MapKit/MapKit.h>
 
-@interface Destination : NSObject {
-    NSString *name;
+@interface Destination : NSObject <MKAnnotation> {
+    NSString *title;
     NSString *address;
     
     NSString *fsid;
     
-    NSString *lat;
-    NSString *lng;
+    CLLocationCoordinate2D coordinate;
 }
 
-@property (nonatomic, retain) NSString *name;
+@property (nonatomic, readonly, copy) NSString *title;
 @property (nonatomic, retain) NSString *address;
 
 @property (nonatomic, retain) NSString *fsid;
 
-@property (nonatomic, retain) NSString *lat;
-@property (nonatomic, retain) NSString *lng;
+@property (nonatomic, readwrite) CLLocationCoordinate2D coordinate;
 
-- (id)initWithName:(NSString *)theName;
+- (id)initWithTitle:(NSString *)theTitle;
+- (id)initWithLocation:(CLLocationCoordinate2D)coord;
 
 @end

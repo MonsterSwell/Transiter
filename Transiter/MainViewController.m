@@ -93,7 +93,7 @@
 - (void)updateViews {
     if (destinationList.count) {
         Destination *dest = [destinationList objectAtIndex:0];
-        self.searchBar.placeholder = dest.name;
+        self.searchBar.placeholder = dest.title;
     
         // Update the MKMapViews to reflect all the destinations in the list
         
@@ -137,6 +137,35 @@
     MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(self.location, 1000.0, 1000.0);
     MKCoordinateRegion adjustedRegion = [mapView regionThatFits:viewRegion];                
     [mapView setRegion:adjustedRegion animated:YES];
+}
+
+#pragma mark - MKMapViewDelegate
+
+- (void)mapView:(MKMapView *)mapView didChangeUserTrackingMode:(MKUserTrackingMode)mode animated:(BOOL)animated {
+    
+}
+
+- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
+    
+    if ([annotation isKindOfClass:[MKUserLocation class]]) {
+        return nil; // Don't return a pin for the user's location
+    }
+    
+    static NSString *annIdentifier = @"DestinationAnnotation";
+    
+    MKAnnotationView *aView = [self.mapView dequeueReusableAnnotationViewWithIdentifier:annIdentifier];
+    if (!aView) {
+        aView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:annIdentifier];
+        
+        aView.canShowCallout = YES;
+ 
+        // Method to add a side button
+//        UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+//        [rightButton addTarget:self action:@selector(myShowsDetailMethod) forControlEvents:UIControlEventTouchUpInside];
+//        aView.rightCalloutAccessoryView = rightButton;
+    }
+    
+    return aView;
 }
 
 #pragma mark - UISearchBarDelegate
@@ -247,7 +276,7 @@
     
     // NSLog(@"location %@", destination.name);
     
-    cell.textLabel.text = destination.name;
+    cell.textLabel.text = destination.title;
     cell.detailTextLabel.text = destination.address;
     return cell;
 }
@@ -255,7 +284,10 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
         // Add the selection to the destination list
-        [destinationList addObject:[searchResultList objectAtIndex:indexPath.row]];
+        Destination *dest = [searchResultList objectAtIndex:indexPath.row];
+        
+        [destinationList addObject:dest];
+        [mapView addAnnotation:dest];
         
         // Empty the search results
         [searchResultList removeAllObjects];
@@ -280,6 +312,8 @@
     NSLog(@"request finished");
     NSArray *venues = [self.fsResponse objectForKey:@"venues"];
     
+    [searchResultList removeAllObjects];
+    
     for (NSDictionary *venue in venues) {
         NSLog(@"%@", venue);
         NSString *fsid = [venue objectForKey:@"id"];
@@ -289,18 +323,18 @@
         
         NSLog(@"location: %@", loc);
         
-        NSString *lat = [loc objectForKey:@"lat"];
-        NSString *lng = [loc objectForKey:@"lng"];
+        CLLocationCoordinate2D coord;
+        coord.latitude = [[loc objectForKey:@"lat"] doubleValue];
+        coord.longitude = [[loc objectForKey:@"lng"] doubleValue];
         
         NSString *address = [loc objectForKey:@"address"];
         NSString *city = [loc objectForKey:@"city"];
         NSString *country = [loc objectForKey:@"Germany"];
         int distance = (int)[loc objectForKey:@"distance"];
         
-        Destination *dest = [[Destination alloc] initWithName:name];
+        Destination *dest = [[Destination alloc] initWithTitle:name];
         dest.fsid = fsid;
-        dest.lat = lat;
-        dest.lng = lng;
+        dest.coordinate = coord;
         dest.address = [NSString stringWithFormat:@"%@, %@", address, city];
         
         NSLog(@"added object %@", name);

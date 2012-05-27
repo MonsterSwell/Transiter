@@ -10,24 +10,31 @@
 
 @implementation Destination
 
-@synthesize name;
+@synthesize title;
 @synthesize address;
 
 @synthesize fsid;
 
-@synthesize lat;
-@synthesize lng;
+@synthesize coordinate;
 
-
-- (id)initWithName:(NSString *)theName {
+- (id)initWithTitle:(NSString *)theTitle {
     if (self = [super init]) {
-        self.name = theName;
+        title = theTitle;
         
-        self.address = @"";
-        self.fsid = nil;
+        address = @"";
+        fsid = nil;
+    }
+    
+    return self;
+}
+
+- (id)initWithLocation:(CLLocationCoordinate2D)coord {
+    if (self = [super init]) {
+        coordinate = coord;
         
-        self.lat = nil;
-        self.lng = nil;
+        title = @"";
+        address = @"";
+        fsid = nil;
     }
     
     return self;

@@ -17,7 +17,7 @@
 #define METERS_PER_MILE 1609.344
 
 @interface MainViewController : UIViewController <UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, BZFoursquareRequestDelegate, BZFoursquareSessionDelegate,
-    CLLocationManagerDelegate> {
+    CLLocationManagerDelegate, MKMapViewDelegate> {
     
     NSMutableArray *destinationList;
     NSMutableArray *searchResultList;
