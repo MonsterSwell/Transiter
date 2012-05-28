@@ -11,6 +11,7 @@
 #import <CoreLocation/CoreLocation.h>
 
 #import "Destination.h"
+#import "CurrentLocationAnnotationView.h"
 
 #import "BZFoursquare.h"
 
@@ -29,6 +30,8 @@
         
     CLLocationManager *locationManager;
     CLLocationCoordinate2D location;
+        
+    CurrentLocationAnnotationView *claView;
         
     NSMutableArray *overlays;
 }
@@ -49,6 +52,8 @@
 @property(nonatomic,copy) NSDictionary *fsResponse;
 
 @property (readwrite) CLLocationCoordinate2D location;
+
+@property (nonatomic, strong) CurrentLocationAnnotationView *claView;
 
 @property (strong, nonatomic) NSMutableArray *overlays;
 

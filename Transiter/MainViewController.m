@@ -31,6 +31,8 @@
 
 @synthesize location;
 
+@synthesize claView;
+
 @synthesize overlays;
 
 - (void)viewDidLoad
@@ -53,14 +55,13 @@
     // 4
     [mapView setRegion:adjustedRegion animated:YES];
     
+//    [mapView setUserTrackingMode:MKUserTrackingModeFollow animated:YES];
     
     self.destinationList = [[NSMutableArray alloc] init];
     self.searchResultList = [[NSMutableArray alloc] init];
     
     self.overlays = [[NSMutableArray alloc] init];
     
-//    [self.destinationList addObject:[[Destination alloc] initWithName:@"Work"]];
-//    [self.destinationList addObject:[[Destination alloc] initWithName:@"Home"]];
     
     [self updateViews];
     
@@ -179,20 +180,40 @@
     MKCoordinateRegion adjustedRegion = [mapView regionThatFits:viewRegion];                
     [mapView setRegion:adjustedRegion animated:YES];
     
+    if (self.claView) {
+        [claView setNeedsDisplay];
+    }
+    
     // Update overlay
     [self redrawOverlays];
 }
 
 #pragma mark - MKMapViewDelegate
 
-- (void)mapView:(MKMapView *)mapView didChangeUserTrackingMode:(MKUserTrackingMode)mode animated:(BOOL)animated {
+- (void)mapView:(MKMapView *)mapView didChangeUserTrackingMode:(MKUserTrackingMode)mode animated:(BOOL)animated {    
+}
+
+- (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation {
     
+//    [[self mapView] setShowsUserLocation:NO];
+//    
+//    [[self mapView] setShowsUserLocation:YES];
+    
+//    if (self.claView) {
+//        self.claView.annotation = userLocation;
+//        [self.claView setNeedsDisplay];
+//    }
 }
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
     
     if ([annotation isKindOfClass:[MKUserLocation class]]) {
-        return nil; // Don't return a pin for the user's location
+        NSLog(@"Getting new view for user location");
+        
+        self.claView = [[CurrentLocationAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:nil];
+        return claView;
+        
+//        return nil; // Don't return a pin for the user's location
     }
     
     static NSString *annIdentifier = @"DestinationAnnotation";
@@ -349,6 +370,8 @@
         
         [destinationList addObject:dest];
         [mapView addAnnotation:dest];
+        
+        if (self.claView) [claView updateTarget:dest.coordinate];
         
         [self redrawOverlays];
         
