@@ -45,14 +45,11 @@
     locationManager.desiredAccuracy = kCLLocationAccuracyBest;
     [locationManager startUpdatingLocation];
     
-    CLLocationCoordinate2D zoomLocation;
-    zoomLocation.latitude = 39.281516;
-    zoomLocation.longitude= -76.580806;
-    // 2
+    CLLocationCoordinate2D zoomLocation; // TODO cache the user's last known location
+    zoomLocation.latitude = 52.492706;
+    zoomLocation.longitude= 13.354797;
     MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(zoomLocation, 1000.0, 1000.0);
-    // 3
     MKCoordinateRegion adjustedRegion = [mapView regionThatFits:viewRegion];                
-    // 4
     [mapView setRegion:adjustedRegion animated:YES];
     
 //    [mapView setUserTrackingMode:MKUserTrackingModeFollow animated:YES];
@@ -111,13 +108,11 @@
 }
 
 - (void)redrawOverlays {
-    NSLog(@"In redraw overlays");
+//    NSLog(@"In redraw overlays");
     
     // TODO maybe not redraw all, but for now
     
     [mapView removeOverlays:overlays];
-    
-    NSLog(@"%d", destinationList.count);
     
     for (int i = 0; i < destinationList.count; i++) {
         CLLocationCoordinate2D coords[2];
@@ -136,8 +131,6 @@
         }
         
         MKPolyline *line = [MKPolyline polylineWithCoordinates:coords count:2];
-        
-        NSLog(@"added overlay %@", line);
         
         [mapView addOverlay:line];
         [overlays addObject:line];
@@ -176,6 +169,8 @@
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
     self.location = newLocation.coordinate;
     
+    NSLog(@"Location manager location: %f,%f", newLocation.coordinate.latitude, newLocation.coordinate.longitude);
+    
     MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(self.location, 1000.0, 1000.0);
     MKCoordinateRegion adjustedRegion = [mapView regionThatFits:viewRegion];                
     [mapView setRegion:adjustedRegion animated:YES];
@@ -194,15 +189,8 @@
 }
 
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation {
-    
-//    [[self mapView] setShowsUserLocation:NO];
-//    
-//    [[self mapView] setShowsUserLocation:YES];
-    
-//    if (self.claView) {
-//        self.claView.annotation = userLocation;
-//        [self.claView setNeedsDisplay];
-//    }
+    // TODO refactor out self.location in favor of this
+    NSLog(@"MapView User location: %f,%f", mapView.userLocation.coordinate.latitude, mapView.userLocation.coordinate.longitude);
 }
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
@@ -212,8 +200,6 @@
         
         self.claView = [[CurrentLocationAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:nil];
         return claView;
-        
-//        return nil; // Don't return a pin for the user's location
     }
     
     static NSString *annIdentifier = @"DestinationAnnotation";
@@ -249,10 +235,7 @@
 #pragma mark - UISearchBarDelegate
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
-//    NSLog(@"begun editing %@", self.searchBar.showsScopeBar);
-
     self.searchTable.hidden = NO;
-//    self.searchDisplayController.searchContentsController.
     
     self.searchBar.showsCancelButton = YES;
 }
@@ -356,8 +339,6 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
-    // NSLog(@"location %@", destination.name);
-    
     cell.textLabel.text = destination.title;
     cell.detailTextLabel.text = destination.address;
     return cell;
@@ -397,19 +378,18 @@
     self.fsRequest = nil;
     
     // Foursquare API call https://developer.foursquare.com/docs/venues/search
-    NSLog(@"request finished");
     NSArray *venues = [self.fsResponse objectForKey:@"venues"];
     
     [searchResultList removeAllObjects];
     
     for (NSDictionary *venue in venues) {
-        NSLog(@"%@", venue);
+//        NSLog(@"%@", venue);
         NSString *fsid = [venue objectForKey:@"id"];
         NSString *name = [venue objectForKey:@"name"];
         
         NSDictionary *loc = [venue objectForKey:@"location"];
         
-        NSLog(@"location: %@", loc);
+//        NSLog(@"location: %@", loc);
         
         CLLocationCoordinate2D coord;
         coord.latitude = [[loc objectForKey:@"lat"] doubleValue];
@@ -425,7 +405,7 @@
         dest.coordinate = coord;
         dest.address = [NSString stringWithFormat:@"%@, %@", address, city];
         
-        NSLog(@"added object %@", name);
+//        NSLog(@"added object %@", name);
         [searchResultList addObject:dest];
     }
     
