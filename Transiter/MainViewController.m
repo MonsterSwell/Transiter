@@ -31,6 +31,8 @@
 
 @synthesize location;
 
+@synthesize overlays;
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -54,6 +56,8 @@
     
     self.destinationList = [[NSMutableArray alloc] init];
     self.searchResultList = [[NSMutableArray alloc] init];
+    
+    self.overlays = [[NSMutableArray alloc] init];
     
 //    [self.destinationList addObject:[[Destination alloc] initWithName:@"Work"]];
 //    [self.destinationList addObject:[[Destination alloc] initWithName:@"Home"]];
@@ -105,6 +109,40 @@
     }
 }
 
+- (void)redrawOverlays {
+    NSLog(@"In redraw overlays");
+    
+    // TODO maybe not redraw all, but for now
+    
+    [mapView removeOverlays:overlays];
+    
+    NSLog(@"%d", destinationList.count);
+    
+    for (int i = 0; i < destinationList.count; i++) {
+        CLLocationCoordinate2D coords[2];
+        
+        if (i == 0) {
+            coords[0] = location;
+            
+            Destination *dest2 = [destinationList objectAtIndex:0];
+            coords[1] = dest2.coordinate;
+        } else {
+            Destination *dest = [destinationList objectAtIndex:i-1];
+            coords[0] = dest.coordinate;
+            
+            Destination *dest2 = [destinationList objectAtIndex:i];
+            coords[1] = dest2.coordinate;
+        }
+        
+        MKPolyline *line = [MKPolyline polylineWithCoordinates:coords count:2];
+        
+        NSLog(@"added overlay %@", line);
+        
+        [mapView addOverlay:line];
+        [overlays addObject:line];
+    }
+}
+
 - (void)cancelRequest {
     if (self.fsRequest) {
         self.fsRequest.delegate = nil;
@@ -140,6 +178,9 @@
     MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(self.location, 1000.0, 1000.0);
     MKCoordinateRegion adjustedRegion = [mapView regionThatFits:viewRegion];                
     [mapView setRegion:adjustedRegion animated:YES];
+    
+    // Update overlay
+    [self redrawOverlays];
 }
 
 #pragma mark - MKMapViewDelegate
@@ -309,23 +350,7 @@
         [destinationList addObject:dest];
         [mapView addAnnotation:dest];
         
-        // Add an overlay from the last point (or the user's current location) to this point
-        CLLocationCoordinate2D coords[2];
-        
-        // Indexing is fucked because we already add the object TODO
-        if (destinationList.count == 1) {
-            coords[0] = location;
-        } else {
-            // -2 because we just already added the Dest to the destinationList
-            Destination *previousDestination = [destinationList objectAtIndex:destinationList.count-2];
-            coords[0] = previousDestination.coordinate;
-        }
-        coords[1] = dest.coordinate;
-        
-//        NSLog(@"Coordinates array %@", coords);
-        MKPolyline *line = [MKPolyline polylineWithCoordinates:coords count:2];
-        [mapView addOverlay:line];
-        
+        [self redrawOverlays];
         
         // Empty the search results
         [searchResultList removeAllObjects];
