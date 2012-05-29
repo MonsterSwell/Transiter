@@ -178,7 +178,9 @@
         [self.claView setNeedsDisplay];
         
         if ([self.claView hasTarget] && [self.claView distanceToTarget] < 50) {
-            // Remove this destination, set the target as the next destination
+            // Remove this destination and its annotation, set the target as the next destination
+            Destination *dest = [self.destinationList objectAtIndex:0];
+            [self.mapView removeAnnotation:dest];
             [self.destinationList removeObjectAtIndex:0];
             
             // TODO enable re-entry into a targeted situation from different scenarios
