@@ -39,6 +39,17 @@
     return self;
 }
 
+- (BOOL)hasTarget {
+    return CLLocationCoordinate2DIsValid(self.target);
+}
+
+- (int)distanceToTarget {
+    CLLocation *here = [[CLLocation alloc] initWithLatitude:self.annotation.coordinate.latitude longitude:self.annotation.coordinate.longitude];
+    CLLocation *there = [[CLLocation alloc] initWithLatitude:target.latitude longitude:target.longitude];
+    
+    return [here distanceFromLocation:there];
+}
+
 - (void)updateTarget:(CLLocationCoordinate2D)newTarget {
     self.target = newTarget;
     
@@ -63,12 +74,7 @@
     
     NSString *text;
     if (CLLocationCoordinate2DIsValid(self.target)) {
-        // Calculate distance
-        
-        CLLocation *here = [[CLLocation alloc] initWithLatitude:currentLocation.latitude longitude:currentLocation.longitude];
-        CLLocation *there = [[CLLocation alloc] initWithLatitude:target.latitude longitude:target.longitude];
-        
-        int distance = [here distanceFromLocation:there];
+        int distance = [self distanceToTarget];
         
         text = [NSString stringWithFormat:@"%dm", distance];
     } else {

@@ -14,6 +14,8 @@
 
 - (id)initWithAnnotation:(id <MKAnnotation>)annotation reuseIdentifier:(NSString *)reuseIdentifier;
 
+- (BOOL)hasTarget;
+- (int)distanceToTarget;
 - (void)updateTarget:(CLLocationCoordinate2D)newTarget;
 
 @end

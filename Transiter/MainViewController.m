@@ -29,8 +29,7 @@
 @synthesize fsNotifications;
 @synthesize fsResponse;
 
-@synthesize location;
-
+@synthesize cla;
 @synthesize claView;
 
 @synthesize overlays;
@@ -117,7 +116,7 @@
         CLLocationCoordinate2D coords[2];
         
         if (i == 0) {
-            coords[0] = location;
+            coords[0] = self.cla.coordinate;
             
             Destination *dest2 = [destinationList objectAtIndex:0];
             coords[1] = dest2.coordinate;
@@ -155,7 +154,7 @@
 - (void)searchVenues {
     [self prepareForRequest];
     
-    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%f,%f", self.location.latitude, self.location.longitude], @"ll", self.searchBar.text, @"query", nil];
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%f,%f", self.cla.coordinate.latitude, self.cla.coordinate.longitude], @"ll", self.searchBar.text, @"query", nil];
     
     self.fsRequest = [self.foursquare requestWithPath:@"venues/search" HTTPMethod:@"GET" parameters:parameters delegate:self];
     [self.fsRequest start];
@@ -166,16 +165,29 @@
 #pragma mark - CLLocationManagerDelegate
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
-    self.location = newLocation.coordinate;
-    
     NSLog(@"Location manager location: %f,%f", newLocation.coordinate.latitude, newLocation.coordinate.longitude);
     
-    MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(self.location, 1000.0, 1000.0);
+    MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(self.cla.coordinate, 1000.0, 1000.0);
     MKCoordinateRegion adjustedRegion = [mapView regionThatFits:viewRegion];                
     [mapView setRegion:adjustedRegion animated:YES];
     
-    if (self.claView) {
-        [claView setNeedsDisplay];
+    if (self.cla) {
+        self.cla.coordinate = newLocation.coordinate;
+        [self.claView setNeedsDisplay];
+        
+        // TODO check if we're there yet
+        if ([self.claView hasTarget] && [self.claView distanceToTarget] < 50) {
+            // Remove this destination, set the target as the next destination
+            [self.destinationList removeObjectAtIndex:0];
+            
+            Destination *newDest = [self.destinationList objectAtIndex:0];
+            [self.claView updateTarget:newDest.coordinate];
+            
+            // TODO check in on foursquare on the venue
+        }
+    } else {
+        self.cla = [[CurrentLocationAnnotation alloc] initWithLocation:newLocation.coordinate];
+        [self.mapView addAnnotation:self.cla];
     }
     
     // Update overlay
@@ -188,17 +200,17 @@
 }
 
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation {
-    // TODO refactor out self.location in favor of this
-    NSLog(@"MapView User location: %f,%f", mapView.userLocation.coordinate.latitude, mapView.userLocation.coordinate.longitude);
+    NSLog(@"MapView User location: %f,%f", self.mapView.userLocation.coordinate.latitude, self.mapView.userLocation.coordinate.longitude);
 }
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
-    
     if ([annotation isKindOfClass:[MKUserLocation class]]) {
-        NSLog(@"Getting new view for user location");
-        
+        return nil;
+    }
+    
+    if ([annotation isKindOfClass:[CurrentLocationAnnotation class]]) {
         self.claView = [[CurrentLocationAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:nil];
-        return claView;
+        return self.claView;
     }
     
     static NSString *annIdentifier = @"DestinationAnnotation";
@@ -208,11 +220,6 @@
         aView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:annIdentifier];
         
         aView.canShowCallout = YES;
- 
-        // Method to add a side button
-//        UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
-//        [rightButton addTarget:self action:@selector(myShowsDetailMethod) forControlEvents:UIControlEventTouchUpInside];
-//        aView.rightCalloutAccessoryView = rightButton;
     }
     
     return aView;
@@ -351,7 +358,10 @@
         [destinationList addObject:dest];
         [mapView addAnnotation:dest];
         
-        if (destinationList.count == 0 && self.claView) [claView updateTarget:dest.coordinate];
+        if (![self.claView hasTarget]) {
+            Destination *target = [destinationList objectAtIndex:0];
+            [claView updateTarget:target.coordinate];
+        }
         
         [self redrawOverlays];
         
@@ -382,13 +392,10 @@
     [searchResultList removeAllObjects];
     
     for (NSDictionary *venue in venues) {
-//        NSLog(@"%@", venue);
         NSString *fsid = [venue objectForKey:@"id"];
         NSString *name = [venue objectForKey:@"name"];
         
         NSDictionary *loc = [venue objectForKey:@"location"];
-        
-//        NSLog(@"location: %@", loc);
         
         CLLocationCoordinate2D coord;
         coord.latitude = [[loc objectForKey:@"lat"] doubleValue];
@@ -396,21 +403,18 @@
         
         NSString *address = [loc objectForKey:@"address"];
         NSString *city = [loc objectForKey:@"city"];
-        NSString *country = [loc objectForKey:@"Germany"];
-        int distance = (int)[loc objectForKey:@"distance"];
+//        NSString *country = [loc objectForKey:@"Germany"];
+//        int distance = (int)[loc objectForKey:@"distance"];
         
         Destination *dest = [[Destination alloc] initWithTitle:name];
         dest.fsid = fsid;
         dest.coordinate = coord;
         dest.address = [NSString stringWithFormat:@"%@, %@", address, city];
         
-//        NSLog(@"added object %@", name);
         [searchResultList addObject:dest];
     }
     
     [self.searchTable reloadData];
-    
-    // TODO update tableview, with search results
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
@@ -422,10 +426,10 @@
 #pragma mark - BZFoursquareSessionDelegate
 
 - (void)foursquareDidAuthorize:(BZFoursquare *)foursquare {
-    NSLog(@"foursquare access token %@", foursquare.accessToken);
+    NSLog(@"foursquare access token %@", self.foursquare.accessToken);
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setValue:foursquare.accessToken forKey:@"fstoken"];
+    [defaults setValue:self.foursquare.accessToken forKey:@"fstoken"];
 }
 
 - (void)foursquareDidNotAuthorize:(BZFoursquare *)foursquare error:(NSDictionary *)errorInfo {
