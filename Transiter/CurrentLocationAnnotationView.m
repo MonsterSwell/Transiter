@@ -68,7 +68,7 @@
     
     CLLocationCoordinate2D currentLocation = self.annotation.coordinate;
     
-    NSLog(@"Annotation view position %f, %f", currentLocation.latitude, currentLocation.longitude);
+//    NSLog(@"Annotation view position %f, %f", currentLocation.latitude, currentLocation.longitude);
     
     [[UIColor redColor] set];
     

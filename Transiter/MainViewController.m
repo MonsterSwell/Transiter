@@ -61,6 +61,12 @@
     
     [self updateViews];
     
+    /* 
+     * Foursquare test account:
+     * Username: alper@monsterswell.com
+     * Password: testfoursquare
+     */
+    
     // Setup foursquare object
     // See foursquare example: https://github.com/baztokyo/foursquare-ios-api/blob/master/FSQDemo/FSQDemo/FSQMasterViewController.m
     self.foursquare = [[BZFoursquare alloc] initWithClientID:@"PE44U5EYTFAENZDA1JRMWVXA3EE22WCTOAZX1TFBLPWSA2GA" callbackURL:@"transiter://foursquare"];
@@ -162,10 +168,23 @@
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 }
 
+- (void)checkinVenue:(NSString *)fsid {
+    [self prepareForRequest];
+    
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:fsid, @"venueId", @"Reached this venue using Transiter.", @"shout", @"public", @"broadcast", @"20120321", @"v", nil];
+    
+    NSLog(@"Trying a checkin with %@", parameters);
+    
+    self.fsRequest = [self.foursquare requestWithPath:@"checkins/add" HTTPMethod:@"POST" parameters:parameters delegate:self];
+    [self.fsRequest start];
+    
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+}
+
 #pragma mark - CLLocationManagerDelegate
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
-    NSLog(@"Location manager location: %f,%f", newLocation.coordinate.latitude, newLocation.coordinate.longitude);
+//    NSLog(@"Location manager location: %f,%f", newLocation.coordinate.latitude, newLocation.coordinate.longitude);
     
 //    MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(self.cla.coordinate, 1000.0, 1000.0);
 //    MKCoordinateRegion adjustedRegion = [mapView regionThatFits:viewRegion];                
@@ -175,22 +194,26 @@
     
     if (self.cla) {
         self.cla.coordinate = newLocation.coordinate;
-        [self.claView setNeedsDisplay];
         
-        if ([self.claView hasTarget] && [self.claView distanceToTarget] < 50) {
-            // Remove this destination and its annotation, set the target as the next destination
-            Destination *dest = [self.destinationList objectAtIndex:0];
-            [self.mapView removeAnnotation:dest];
-            [self.destinationList removeObjectAtIndex:0];
-            
-            // TODO enable re-entry into a targeted situation from different scenarios
+        if ([self.claView hasTarget]) {
+            if ([self.claView distanceToTarget] < 50) {
+                // Remove this destination and its annotation, set the target as the next destination
+                Destination *dest = [self.destinationList objectAtIndex:0];
+                [self.mapView removeAnnotation:dest];
+                [self.destinationList removeObjectAtIndex:0];
+                [self.claView updateTarget:kCLLocationCoordinate2DInvalid];
+                // TODO check in on foursquare on the venue
+                
+                [self checkinVenue:dest.fsid];
+            }
+        } else {
             if (self.destinationList.count > 0) {
                 Destination *newDest = [self.destinationList objectAtIndex:0];
                 [self.claView updateTarget:newDest.coordinate];
             }
-            
-            // TODO check in on foursquare on the venue
         }
+        
+        [self.claView setNeedsDisplay];
     } else {
         self.cla = [[CurrentLocationAnnotation alloc] initWithLocation:newLocation.coordinate];
         [self.mapView addAnnotation:self.cla];
@@ -210,6 +233,7 @@
 }
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
+    // http://developer.apple.com/library/ios/#documentation/UserExperience/Conceptual/LocationAwarenessPG/AnnotatingMaps/AnnotatingMaps.html#//apple_ref/doc/uid/TP40009497-CH6-SW1
     if ([annotation isKindOfClass:[MKUserLocation class]]) {
         return nil;
     }
@@ -323,6 +347,8 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the data
+        Destination *dest = [destinationList objectAtIndex:indexPath.row];
+        [self.mapView removeAnnotation:dest];
         [destinationList removeObjectAtIndex:indexPath.row];
         
         [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
@@ -392,35 +418,41 @@
     self.fsResponse = request.response;
     self.fsRequest = nil;
     
-    // Foursquare API call https://developer.foursquare.com/docs/venues/search
-    NSArray *venues = [self.fsResponse objectForKey:@"venues"];
+    NSLog(@"%@", request.response);
     
-    [searchResultList removeAllObjects];
-    
-    for (NSDictionary *venue in venues) {
-        NSString *fsid = [venue objectForKey:@"id"];
-        NSString *name = [venue objectForKey:@"name"];
+    if ([request.path isEqualToString:@"venues/search"]) {
+        // Foursquare API call https://developer.foursquare.com/docs/venues/search
+        NSArray *venues = [self.fsResponse objectForKey:@"venues"];
         
-        NSDictionary *loc = [venue objectForKey:@"location"];
+        [searchResultList removeAllObjects];
         
-        CLLocationCoordinate2D coord;
-        coord.latitude = [[loc objectForKey:@"lat"] doubleValue];
-        coord.longitude = [[loc objectForKey:@"lng"] doubleValue];
+        for (NSDictionary *venue in venues) {
+            NSString *fsid = [venue objectForKey:@"id"];
+            NSString *name = [venue objectForKey:@"name"];
+            
+            NSDictionary *loc = [venue objectForKey:@"location"];
+            
+            CLLocationCoordinate2D coord;
+            coord.latitude = [[loc objectForKey:@"lat"] doubleValue];
+            coord.longitude = [[loc objectForKey:@"lng"] doubleValue];
+            
+            NSString *address = [loc objectForKey:@"address"];
+            NSString *city = [loc objectForKey:@"city"];
+            //        NSString *country = [loc objectForKey:@"Germany"];
+            //        int distance = (int)[loc objectForKey:@"distance"];
+            
+            Destination *dest = [[Destination alloc] initWithTitle:name];
+            dest.fsid = fsid;
+            dest.coordinate = coord;
+            dest.address = [NSString stringWithFormat:@"%@, %@", address, city];
+            
+            [searchResultList addObject:dest];
+        }
         
-        NSString *address = [loc objectForKey:@"address"];
-        NSString *city = [loc objectForKey:@"city"];
-//        NSString *country = [loc objectForKey:@"Germany"];
-//        int distance = (int)[loc objectForKey:@"distance"];
-        
-        Destination *dest = [[Destination alloc] initWithTitle:name];
-        dest.fsid = fsid;
-        dest.coordinate = coord;
-        dest.address = [NSString stringWithFormat:@"%@, %@", address, city];
-        
-        [searchResultList addObject:dest];
+        [self.searchTable reloadData];
+    } else if ([request.path isEqualToString:@"checkin"]) {
+        // Pass. We don't need to catch the checkin. Maybe do something on error someday.
     }
-    
-    [self.searchTable reloadData];
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }

@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		4E00618B1574E5BF00C7A42A /* CurrentLocationAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E00618A1574E5BF00C7A42A /* CurrentLocationAnnotation.m */; };
+		4E00618E1575070900C7A42A /* loc2.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 4E00618D1575070900C7A42A /* loc2.gpx */; };
+		4E0061901575078400C7A42A /* loc1.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 4E00618F1575078400C7A42A /* loc1.gpx */; };
 		4E14FFA4156E97EE00C5E064 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E14FFA3156E97EE00C5E064 /* CoreLocation.framework */; };
 		4E1F19A81566A034001B333D /* BZFoursquare.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E1F19A51566A034001B333D /* BZFoursquare.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		4E1F19A91566A034001B333D /* BZFoursquareRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E1F19A71566A034001B333D /* BZFoursquareRequest.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -28,6 +30,9 @@
 /* Begin PBXFileReference section */
 		4E0061891574E5BF00C7A42A /* CurrentLocationAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrentLocationAnnotation.h; sourceTree = "<group>"; };
 		4E00618A1574E5BF00C7A42A /* CurrentLocationAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrentLocationAnnotation.m; sourceTree = "<group>"; };
+		4E00618C1575063F00C7A42A /* test.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = test.gpx; path = ../test.gpx; sourceTree = "<group>"; };
+		4E00618D1575070900C7A42A /* loc2.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = loc2.gpx; sourceTree = "<group>"; };
+		4E00618F1575078400C7A42A /* loc1.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = loc1.gpx; sourceTree = "<group>"; };
 		4E14FFA3156E97EE00C5E064 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		4E1F19A41566A034001B333D /* BZFoursquare.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZFoursquare.h; sourceTree = "<group>"; };
 		4E1F19A51566A034001B333D /* BZFoursquare.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BZFoursquare.m; sourceTree = "<group>"; };
@@ -135,6 +140,9 @@
 		4E7BB4E51551B88E00926C0B /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				4E00618C1575063F00C7A42A /* test.gpx */,
+				4E00618F1575078400C7A42A /* loc1.gpx */,
+				4E00618D1575070900C7A42A /* loc2.gpx */,
 				4E7BB4E61551B88E00926C0B /* Transiter-Info.plist */,
 				4E7BB4E71551B88E00926C0B /* InfoPlist.strings */,
 				4E7BB4EA1551B88E00926C0B /* main.m */,
@@ -196,6 +204,8 @@
 			files = (
 				4E7BB4E91551B88E00926C0B /* InfoPlist.strings in Resources */,
 				4E7BB4F21551B88E00926C0B /* MainStoryboard.storyboard in Resources */,
+				4E00618E1575070900C7A42A /* loc2.gpx in Resources */,
+				4E0061901575078400C7A42A /* loc1.gpx in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
