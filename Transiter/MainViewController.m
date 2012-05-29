@@ -177,13 +177,15 @@
         self.cla.coordinate = newLocation.coordinate;
         [self.claView setNeedsDisplay];
         
-        // TODO check if we're there yet
         if ([self.claView hasTarget] && [self.claView distanceToTarget] < 50) {
             // Remove this destination, set the target as the next destination
             [self.destinationList removeObjectAtIndex:0];
             
-            Destination *newDest = [self.destinationList objectAtIndex:0];
-            [self.claView updateTarget:newDest.coordinate];
+            // TODO enable re-entry into a targeted situation from different scenarios
+            if (self.destinationList.count > 0) {
+                Destination *newDest = [self.destinationList objectAtIndex:0];
+                [self.claView updateTarget:newDest.coordinate];
+            }
             
             // TODO check in on foursquare on the venue
         }
