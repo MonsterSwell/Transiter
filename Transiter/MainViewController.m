@@ -351,7 +351,7 @@
         [destinationList addObject:dest];
         [mapView addAnnotation:dest];
         
-        if (self.claView) [claView updateTarget:dest.coordinate];
+        if (destinationList.count == 0 && self.claView) [claView updateTarget:dest.coordinate];
         
         [self redrawOverlays];
         
