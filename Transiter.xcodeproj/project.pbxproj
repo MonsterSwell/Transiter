@@ -30,7 +30,6 @@
 /* Begin PBXFileReference section */
 		4E0061891574E5BF00C7A42A /* CurrentLocationAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrentLocationAnnotation.h; sourceTree = "<group>"; };
 		4E00618A1574E5BF00C7A42A /* CurrentLocationAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrentLocationAnnotation.m; sourceTree = "<group>"; };
-		4E00618C1575063F00C7A42A /* test.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = test.gpx; path = ../test.gpx; sourceTree = "<group>"; };
 		4E00618D1575070900C7A42A /* loc2.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = loc2.gpx; sourceTree = "<group>"; };
 		4E00618F1575078400C7A42A /* loc1.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = loc1.gpx; sourceTree = "<group>"; };
 		4E14FFA3156E97EE00C5E064 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -120,19 +119,19 @@
 		4E7BB4E41551B88E00926C0B /* Transiter */ = {
 			isa = PBXGroup;
 			children = (
-				4E1F19A31566A034001B333D /* BZFoursquare */,
 				4E7BB4ED1551B88E00926C0B /* AppDelegate.h */,
 				4E7BB4EE1551B88E00926C0B /* AppDelegate.m */,
+				4E1F19A31566A034001B333D /* BZFoursquare */,
+				4E0061891574E5BF00C7A42A /* CurrentLocationAnnotation.h */,
+				4E00618A1574E5BF00C7A42A /* CurrentLocationAnnotation.m */,
+				4E4D88481573B7BE000AF740 /* CurrentLocationAnnotationView.h */,
+				4E4D88491573B7BE000AF740 /* CurrentLocationAnnotationView.m */,
 				4E1F19BE1567EAA2001B333D /* Destination.h */,
 				4E1F19BF1567EAA2001B333D /* Destination.m */,
 				4E7BB4F01551B88E00926C0B /* MainStoryboard.storyboard */,
 				4E7BB4F31551B88E00926C0B /* MainViewController.h */,
 				4E7BB4F41551B88E00926C0B /* MainViewController.m */,
-				4E0061891574E5BF00C7A42A /* CurrentLocationAnnotation.h */,
-				4E00618A1574E5BF00C7A42A /* CurrentLocationAnnotation.m */,
 				4E7BB4E51551B88E00926C0B /* Supporting Files */,
-				4E4D88481573B7BE000AF740 /* CurrentLocationAnnotationView.h */,
-				4E4D88491573B7BE000AF740 /* CurrentLocationAnnotationView.m */,
 			);
 			path = Transiter;
 			sourceTree = "<group>";
@@ -140,7 +139,6 @@
 		4E7BB4E51551B88E00926C0B /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				4E00618C1575063F00C7A42A /* test.gpx */,
 				4E00618F1575078400C7A42A /* loc1.gpx */,
 				4E00618D1575070900C7A42A /* loc2.gpx */,
 				4E7BB4E61551B88E00926C0B /* Transiter-Info.plist */,
