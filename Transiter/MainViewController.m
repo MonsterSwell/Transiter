@@ -167,9 +167,11 @@
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
     NSLog(@"Location manager location: %f,%f", newLocation.coordinate.latitude, newLocation.coordinate.longitude);
     
-    MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(self.cla.coordinate, 1000.0, 1000.0);
-    MKCoordinateRegion adjustedRegion = [mapView regionThatFits:viewRegion];                
-    [mapView setRegion:adjustedRegion animated:YES];
+//    MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(self.cla.coordinate, 1000.0, 1000.0);
+//    MKCoordinateRegion adjustedRegion = [mapView regionThatFits:viewRegion];                
+//    [mapView setRegion:adjustedRegion animated:YES];
+    
+    [mapView setCenterCoordinate:newLocation.coordinate];
     
     if (self.cla) {
         self.cla.coordinate = newLocation.coordinate;
