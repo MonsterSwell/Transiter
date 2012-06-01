@@ -45,8 +45,11 @@
     [locationManager startUpdatingLocation];
     
     CLLocationCoordinate2D zoomLocation; // TODO cache the user's last known location
-    zoomLocation.latitude = 52.492706;
-    zoomLocation.longitude= 13.354797;
+//    zoomLocation.latitude = 52.492706;
+//    zoomLocation.longitude= 13.354797;
+    zoomLocation.latitude = 52.345953; // Victorieplein Amsterdam
+    zoomLocation.longitude = 4.902913;
+    
     MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(zoomLocation, 1000.0, 1000.0);
     MKCoordinateRegion adjustedRegion = [mapView regionThatFits:viewRegion];                
     [mapView setRegion:adjustedRegion animated:YES];

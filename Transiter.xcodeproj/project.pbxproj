@@ -25,6 +25,8 @@
 		4E7BB4F21551B88E00926C0B /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4E7BB4F01551B88E00926C0B /* MainStoryboard.storyboard */; };
 		4E7BB4F51551B88E00926C0B /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E7BB4F41551B88E00926C0B /* MainViewController.m */; };
 		4E7BB4FC1551C38B00926C0B /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E7BB4FB1551C38B00926C0B /* MapKit.framework */; };
+		4E9227F21579236200C3BEBA /* govi.kml in Resources */ = {isa = PBXBuildFile; fileRef = 4E9227F11579236200C3BEBA /* govi.kml */; };
+		FB6EA2AD32414599BDE5DDF5 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D6EE4CA64D54A0493EC81E4 /* libPods.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +58,9 @@
 		4E7BB4F31551B88E00926C0B /* MainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		4E7BB4F41551B88E00926C0B /* MainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		4E7BB4FB1551C38B00926C0B /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		4E9227F11579236200C3BEBA /* govi.kml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = govi.kml; sourceTree = "<group>"; };
+		9D6EE4CA64D54A0493EC81E4 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		AEA83963BE2B4294956CBBC7 /* Pods.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +74,7 @@
 				4E7BB4DF1551B88E00926C0B /* UIKit.framework in Frameworks */,
 				4E7BB4E11551B88E00926C0B /* Foundation.framework in Frameworks */,
 				4E7BB4E31551B88E00926C0B /* CoreGraphics.framework in Frameworks */,
+				FB6EA2AD32414599BDE5DDF5 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -95,6 +101,7 @@
 				4E7BB4E41551B88E00926C0B /* Transiter */,
 				4E7BB4DD1551B88E00926C0B /* Frameworks */,
 				4E7BB4DB1551B88E00926C0B /* Products */,
+				AEA83963BE2B4294956CBBC7 /* Pods.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -112,6 +119,7 @@
 				4E7BB4DE1551B88E00926C0B /* UIKit.framework */,
 				4E7BB4E01551B88E00926C0B /* Foundation.framework */,
 				4E7BB4E21551B88E00926C0B /* CoreGraphics.framework */,
+				9D6EE4CA64D54A0493EC81E4 /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -139,6 +147,7 @@
 		4E7BB4E51551B88E00926C0B /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				4E9227F11579236200C3BEBA /* govi.kml */,
 				4E00618F1575078400C7A42A /* loc1.gpx */,
 				4E00618D1575070900C7A42A /* loc2.gpx */,
 				4E7BB4E61551B88E00926C0B /* Transiter-Info.plist */,
@@ -159,6 +168,7 @@
 				4E7BB4D61551B88E00926C0B /* Sources */,
 				4E7BB4D71551B88E00926C0B /* Frameworks */,
 				4E7BB4D81551B88E00926C0B /* Resources */,
+				6A866EDB571C48D2B72D7F8F /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -204,10 +214,28 @@
 				4E7BB4F21551B88E00926C0B /* MainStoryboard.storyboard in Resources */,
 				4E00618E1575070900C7A42A /* loc2.gpx in Resources */,
 				4E0061901575078400C7A42A /* loc1.gpx in Resources */,
+				4E9227F21579236200C3BEBA /* govi.kml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		6A866EDB571C48D2B72D7F8F /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		4E7BB4D61551B88E00926C0B /* Sources */ = {
@@ -294,22 +322,30 @@
 		};
 		4E7BB4F91551B88E00926C0B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = AEA83963BE2B4294956CBBC7 /* Pods.xcconfig */;
 			buildSettings = {
+				DSTROOT = /tmp/xcodeproj.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Transiter/Transiter-Prefix.pch";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "Transiter/Transiter-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
 		};
 		4E7BB4FA1551B88E00926C0B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = AEA83963BE2B4294956CBBC7 /* Pods.xcconfig */;
 			buildSettings = {
+				DSTROOT = /tmp/xcodeproj.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Transiter/Transiter-Prefix.pch";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "Transiter/Transiter-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
