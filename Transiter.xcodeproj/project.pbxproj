@@ -25,7 +25,6 @@
 		4E7BB4F21551B88E00926C0B /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4E7BB4F01551B88E00926C0B /* MainStoryboard.storyboard */; };
 		4E7BB4F51551B88E00926C0B /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E7BB4F41551B88E00926C0B /* MainViewController.m */; };
 		4E7BB4FC1551C38B00926C0B /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E7BB4FB1551C38B00926C0B /* MapKit.framework */; };
-		4E9227F21579236200C3BEBA /* govi.kml in Resources */ = {isa = PBXBuildFile; fileRef = 4E9227F11579236200C3BEBA /* govi.kml */; };
 		4E9227FE1579265D00C3BEBA /* TransitProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E9227FD1579265D00C3BEBA /* TransitProvider.m */; };
 		4E922800157933DB00C3BEBA /* govi.json in Resources */ = {isa = PBXBuildFile; fileRef = 4E9227FF157933DB00C3BEBA /* govi.json */; };
 		FB6EA2AD32414599BDE5DDF5 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D6EE4CA64D54A0493EC81E4 /* libPods.a */; };
@@ -60,7 +59,6 @@
 		4E7BB4F31551B88E00926C0B /* MainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		4E7BB4F41551B88E00926C0B /* MainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		4E7BB4FB1551C38B00926C0B /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
-		4E9227F11579236200C3BEBA /* govi.kml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = govi.kml; sourceTree = "<group>"; };
 		4E9227FC1579265D00C3BEBA /* TransitProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransitProvider.h; sourceTree = "<group>"; };
 		4E9227FD1579265D00C3BEBA /* TransitProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransitProvider.m; sourceTree = "<group>"; };
 		4E9227FF157933DB00C3BEBA /* govi.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = govi.json; sourceTree = "<group>"; };
@@ -155,7 +153,6 @@
 			isa = PBXGroup;
 			children = (
 				4E9227FF157933DB00C3BEBA /* govi.json */,
-				4E9227F11579236200C3BEBA /* govi.kml */,
 				4E00618F1575078400C7A42A /* loc1.gpx */,
 				4E00618D1575070900C7A42A /* loc2.gpx */,
 				4E7BB4E61551B88E00926C0B /* Transiter-Info.plist */,
@@ -222,7 +219,6 @@
 				4E7BB4F21551B88E00926C0B /* MainStoryboard.storyboard in Resources */,
 				4E00618E1575070900C7A42A /* loc2.gpx in Resources */,
 				4E0061901575078400C7A42A /* loc1.gpx in Resources */,
-				4E9227F21579236200C3BEBA /* govi.kml in Resources */,
 				4E922800157933DB00C3BEBA /* govi.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
