@@ -37,7 +37,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
     locationManager = [[CLLocationManager alloc] init];
     locationManager.delegate = self;
     locationManager.distanceFilter = kCLDistanceFilterNone; // whenever we move
@@ -61,6 +61,26 @@
     
     self.overlays = [[NSMutableArray alloc] init];
     
+    
+    // Show all annotations of the Netherlands
+    // TODO write redisplay engine
+    // TODO write engine that smartly hides all non relevant stops when zooming out
+    TransitProvider *transitProvider = [[TransitProvider alloc] init];
+    
+    for (NSDictionary *stop in transitProvider.stops) {
+        
+        CLLocationCoordinate2D coord;
+        coord.latitude = [[stop objectForKey:@"lat"] doubleValue];
+        coord.longitude = [[stop objectForKey:@"lng"] doubleValue];
+        
+        MKPointAnnotation *annot = [[MKPointAnnotation alloc] init];
+        annot.title = @"Stop";
+        annot.subtitle = [NSString stringWithFormat:@"%@ %@", [stop objectForKey:@"id"], [stop objectForKey:@"name"]];
+        annot.coordinate = coord;
+        
+        [self.mapView addAnnotation:annot];
+    }
+
     
     [self updateViews];
     
@@ -193,7 +213,8 @@
 //    MKCoordinateRegion adjustedRegion = [mapView regionThatFits:viewRegion];                
 //    [mapView setRegion:adjustedRegion animated:YES];
     
-    [mapView setCenterCoordinate:newLocation.coordinate];
+    /* Disabled this line for the stops code. */
+//    [mapView setCenterCoordinate:newLocation.coordinate];
     
     if (self.cla) {
         self.cla.coordinate = newLocation.coordinate;
@@ -244,6 +265,13 @@
     if ([annotation isKindOfClass:[CurrentLocationAnnotation class]]) {
         self.claView = [[CurrentLocationAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:nil];
         return self.claView;
+    }
+    
+    if ([annotation.title isEqualToString:@"Stop"]) {
+        MKPinAnnotationView *stopView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:nil];
+        
+        stopView.canShowCallout = YES;
+        return stopView;
     }
     
     static NSString *annIdentifier = @"DestinationAnnotation";

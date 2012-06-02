@@ -11,6 +11,7 @@
 #import <CoreLocation/CoreLocation.h>
 
 #import "Destination.h"
+#import "TransitProvider.h"
 #import "CurrentLocationAnnotation.h"
 #import "CurrentLocationAnnotationView.h"
 
