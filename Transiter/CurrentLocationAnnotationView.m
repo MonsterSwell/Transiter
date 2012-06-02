@@ -66,7 +66,7 @@
 //    CGContextSetLineWidth(context, 10);
 //    CGRectInset(myFrame, 5, 5);
     
-    CLLocationCoordinate2D currentLocation = self.annotation.coordinate;
+//    CLLocationCoordinate2D currentLocation = self.annotation.coordinate;
     
 //    NSLog(@"Annotation view position %f, %f", currentLocation.latitude, currentLocation.longitude);
     
